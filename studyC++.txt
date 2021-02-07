@@ -1,0 +1,38 @@
+using namespace xxx:
+	从此处开始，后续代码使用此空间命名函数
+namespace xxxxx{
+
+
+}
+	自定义命名空间
+
+c++创建动态数组：
+	type_name * pointer = new int [num]
+	delete[] pointer;
+	
+指针：
+	wages[10]
+	wages = &wages[0]
+指针与数组区别：
+	指针名可运算，数组名仅为常量
+		pointername = pointer + 1	//alllow
+		array = array + 1 	//not allow
+	sizeof 可返回数组的元素总和大小，指针只能返回类型大小
+
+数组的地址：
+	short tell[10]
+	tell表示第一个元素的地址，&tell表示tell数组的总地址
+	short (*pas)[10] = &tell
+	short *pas2 = tell
+	pas + 1 表示地址移动整个tell大小
+	pas2 + 1 表示地址移动2字节
+
+指针表示与数组表示互换：
+	arrayname[i] <<==>> *(arrayname + i)
+
+内存空间：
+	自动存储（局部变量；函数内定义；函数生命周期，不可规划大小）、静态存储（存在整个程序周期；函数外定义；不可规划周期及大小）、自由存储（可规划生命周期和大小）
+
+内存泄露：
+	某变量被分配自由存储空间，因作用域规则和对象生命周期而被释放，没有delete，则该内存空间仍有数据，且不可使用
+
