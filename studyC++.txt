@@ -36,3 +36,102 @@ c++创建动态数组：
 内存泄露：
 	某变量被分配自由存储空间，因作用域规则和对象生命周期而被释放，没有delete，则该内存空间仍有数据，且不可使用
 
+数组代替品：vector、array
+	
+函数指针：
+	double (*pf)(int)	//返回double的函数指针，调用double x = pf(5);
+	double *pf(int)		//返回double类指针的函数
+	
+函数指针数组：
+	const double * (*pa[3])(const double *,int) = {f1,f2,f3};	//pa为三个函数指针的数组，其返回值为double的地址
+
+	'[]'运算符比'*'运算符高级
+	*pa[3]		//pa为数组，指向3个指针，an array of 3 pointer
+	(*pa)[3]	//pa为数组指针，指向3个元素的数组，an pointer of 3 array
+
+	const double *((*pd)[3])(const double *,int) = &pa; 
+		调用方式为：(*pd)[i](av,3)或(*(*pa)[i])(av,3)
+		获取返回的值：(*(*pd)[i])(av,3)或*(*(*pd)[i])(av,3)
+
+内联函数：
+	inline int add(int a,int b);	//避免函数的压栈弹栈的开销，但会使程序体积庞大
+
+函数/运算符重载：
+	通过参数列表的内容/顺序的不同重载函数
+	运算符重载：type operator+(const Box&,const Box&);	//重置c++内定的运算符
+
+
+模版：
+	对于给定的函数名，可以有非模版、模版、显式具体以及他们的重载函数	
+	模版不能对非基本类型（结构体、类）等数据类型进行运算，显式具体化可以进行此
+	
+	void swap(job &,job &);	//常规函数
+
+	template <typename T> T& swap(T &,T &);	//模版函数，只可以对基本类型int double long等进行模版操作，可放在头文件，不是函数的定义
+
+模版具体化：
+	优先级：非模版函数、显式具体化原型、显式实例化、常规模版函数
+
+	template <> void swap<job>(job &,job &); 或template <> void swap(job &,job &);	//显式具体化（explicit specialization）必须定义,专门针对特定类型的、实现方式不同的具体化函数，可以对结构体等复杂数据类型操作
+
+	templatet void swap<int>（int ,int）;	//实例化(explicit instantitation)只需声明，swap模版专门为int类型做出定义
+	
+作用域：
+	静态持续变量（在整个程序周期存在）:
+		外部链接性：其他文件可访问（函数外定义）
+		内部链接性：仅本文件可访问（函数外定义，且static修饰）
+		无链接性：仅函数块内可访问（函数内定义，且static修饰）
+
+new/delete：
+	delete释放内存：
+		char p[]、char *p的delete方式均为：delete[] p; 
+		delete后，p仍可以访问其内存数据，但随时会被回收，所以delete后常将指针设为NULL，避免访问错乱
+
+
+	new定位符：
+		指定使用的内存位置
+			struct chaff{ char dross[20];int slag};
+			double *p = new (buffer) chaff;	
+			p指针的起始地址为buffer的地址
+				==》》可能出现多个动态存储变量的起始地址相同
+
+			此时不能使用delete[] p释放内存，因buffer指向的是静态内存是程序周期存在的，若p指针不设为NULL，后续仍可以继续访问其内存数据；delete释放的是指向常规new运算符分配的堆空间
+
+
+	
+
+
+				
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
