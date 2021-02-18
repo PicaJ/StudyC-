@@ -81,6 +81,8 @@ c++创建动态数组：
 		外部链接性：其他文件可访问（函数外定义）
 		内部链接性：仅本文件可访问（函数外定义，且static修饰）
 		无链接性：仅函数块内可访问（函数内定义，且static修饰）
+	类作用域：
+		通过对象存储类数据，即每个对象为实例化每个类的作用域
 
 new/delete：
 	delete释放内存：
@@ -101,11 +103,113 @@ new/delete：
 	.h文件存放命名空间的声明部分，.cpp存放命名空间的定义部分，两者都需namespace{}包括
 	using编译和声明指令均可以多个使用，但不能using重复名称
 
+重载运算符：
+	定义：type operatorop(param){....}
+		例：Box operator+(const Box& b){...}
+	使用：Box obj = sid + sara ==> Box obj = sid.operator+(sara)
+
+友元：(类作用域的非成员函数，避免了通过对象的调用)
+	1.为类重载二元运算符时常用，当不通过对象调用重载运算符时，就需要非类成员重载运算符函数，但需要访问类private数据时，就需要友元函数
+	2.声明：在类中按此声明，表明非成员函数，但拥有其他函数相同的访问权限
+		friend type operatorop(praam1,param2)
+	3.定义：type operatorop(param1,param2)
+		例：A = 2.75 * B ==> A = operator*(2.75，B)
+	
+类和动态内存分配：
+	1.指针区别与数组没有预设大小，可作为动态分配，与C的malloc动态分配内存一样，new可给指针内存
+	2.类静态变量不能在声明是初始化，因为声明描述了如何分配内存，但此时不分配内存，需要在类外定义（因为声明在.h文件中，在多个文件引用时，会出现重复初始化的副本），但一个例外是const修饰的static成员变量，可在声明初始化
+	3.复制构造函数：
+		1.当对象按值传参时，会调用复制构造函数拷贝到形参中；当对象赋值给另一对象时，同样调用复制构造函数。若无指定复制构造函数，则调用默认复制构造函数
+		2.默认复制构造函数（浅复制），拷贝是按值赋值，若遇到指针，则复制指针的地址（浅复制：复制指针地址；深复制：复制指针指向内容）
+			例：obj.str = obj2.str
+		3.在构造函数/构析函数有new/delete等内存分配时，应制定复制构造函数
+
+				
+
+类的设计：
+	1.私有数据成员存储信息，公有成员函数访问数据唯一途径
+	2.类声明放在.h文件，类定义放在.cpp文件
+	
+
+类中定义访问权限：默认private
+
+内联函数：（展开函数代码，节省程序时间，但代码体积变大）
+	在类中定义均为内联函数；
+	类外定义，需在函数类型名前添加' inline '
+
+构造函数：
+	1.传入的参数不能和类数据名称一致
+	2.使用非默认构造函数：
+		显式：
+			class_name object = class_name(type x, type y, ...)；
+		隐式：
+			class_name object(type x, type y, ...)；
+		new：
+			class_name *object  = new class_name(type x, type y, ...);
+	3.使用默认构造函数：
+		class_name object;
+		class_name object();
+				
+	4.定义了非默认构造函数后，不能隐式定义对象
+		class_name::class_name()
+		{
+		....
+		}
+析构函数：
+	1.若创建的时静态存储对象，将在程序结束时执行
+	2.若自动存储对象，将在程序执行完代码块时执行
+	3.若是new对象，将在delete释放内存时执行
+	
+const成员函数：
+	const class_name object = class_name(...);
+	被const定义的对象后，调用对象的成员函数时不可修改该对象，因此调用该对象的成员函数需要以下修饰：
+		type class_name::function() const;
+
+this指针：
+	为对象的地址，*this才是对象本身；
+	常用在同时处理两个对象：
+		例：
+		const Stock & Stock::topval(const Stock & s) const
+		{
+			if(s.total_val > total_val){
+				return s;
+			}else{
+				return *this;	//对象本身
+			}
+		}	
+
+类作用域：（在类中有效）
+	1.enum枚举，在类中声明常量，不被对象包含，即在创建对象前存在，类中可用
+	2.static修饰变量，存放在静态变量中，不存储在对象中，与所有对象共享
+	3.类外定义枚举，enum class_name name {...}，避免了类外的冲突
+
+抽象数据类型（ADT）
+
 
 	
 
 
-				
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
